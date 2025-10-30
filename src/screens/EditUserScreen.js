@@ -69,7 +69,7 @@ function EditUserScreen({ route, navigation }) {
                 <TouchableOpacity style={styles.button} onPress={handleUpdate} disabled={processing}>
                     {processing ? <ActivityIndicator color={COLORS.white} /> : <Text style={styles.buttonText}>Luu Thay Doi</Text>}
                 </TouchableOpacity> 
-                {/* DÒNG LỖI ĐÃ ĐƯỢC SỬA Ở TRÊN */}
+               
                 
             </ScrollView>
         </ImageBackground>
