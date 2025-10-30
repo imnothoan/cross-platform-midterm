@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "375882754257",
+    "project_id": "cpmidterm-imnothoan",
+    "storage_bucket": "cpmidterm-imnothoan.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375882754257:android:317db31877b30f7c8a7df0",
+        "android_client_info": {
+          "package_name": "com.cpmidtermproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKgZ4Pg7RDpN6z0osGK-WXs3eZPIVbsa8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
