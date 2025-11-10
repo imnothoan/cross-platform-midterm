@@ -6,6 +6,11 @@ import { COLORS, SIZES, FONTS } from '../constants/theme';
 
 const otherBackground = require('../assets/images/Mine_other.jpeg');
 
+const Achievement = ({ icon, unlocked }) => {
+    if (!unlocked) return null;
+    return <Text style={styles.achievementIcon}>{icon}</Text>;
+};
+
 function HomeScreen({ navigation }) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -47,23 +52,45 @@ function HomeScreen({ navigation }) {
         </View>
     );
 
-    const renderItem = ({ item }) => (
-        <View style={styles.userCard}>
-            <Image source={{ uri: item.image }} style={styles.avatar} />
-            <View style={styles.userInfo}>
-                <Text style={styles.username}>{item.username}</Text>
-                <Text style={styles.email}>{item.email}</Text>
+    const renderItem = ({ item }) => {
+        // --- LOGIC THÀNH TỰU ĐÃ ĐƯỢC CẬP NHẬT ---
+        // 1. "Nhà Thám Hiểm": Username dài
+        const isExplorer = item.username.length > 12;
+
+        // 2. "Thợ Rèn Lành Nghề": Username có chứa SỐ
+        const isMasterSmith = /\d/.test(item.username);
+
+        // 3. "Nghệ Sĩ Pixel" (LOGIC MỚI): Username có chứa ký tự đặc biệt (_, -, .)
+        const isPixelArtist = /[_.-]/.test(item.username);
+
+        // 4. "Người Chơi Hệ HD": Ảnh đại diện dung lượng lớn
+        const isHDPlayer = item.image && item.image.length > 200000;
+
+        return (
+            <View style={styles.userCard}>
+                <Image source={{ uri: item.image }} style={styles.avatar} />
+                <View style={styles.userInfo}>
+                    <Text style={styles.username}>{item.username}</Text>
+                    <Text style={styles.email}>{item.email}</Text>
+                    
+                    <View style={styles.achievementsContainer}>
+                        <Achievement icon="🧭" unlocked={isExplorer} />
+                        <Achievement icon="🛠️" unlocked={isMasterSmith} />
+                        <Achievement icon="🖌️" unlocked={isPixelArtist} />
+                        <Achievement icon="💎" unlocked={isHDPlayer} />
+                    </View>
+                </View>
+                <View style={styles.actions}>
+                    <TouchableOpacity style={[styles.actionButton, {backgroundColor: COLORS.diamondBlue}]} onPress={() => navigation.navigate('EditUser', { user: item })}>
+                        <Text style={styles.buttonText}>Sua</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.actionButton, {backgroundColor: COLORS.dangerRed}]} onPress={() => handleDelete(item)}>
+                        <Text style={styles.buttonText}>Xoa</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={styles.actions}>
-                <TouchableOpacity style={[styles.actionButton, {backgroundColor: COLORS.diamondBlue}]} onPress={() => navigation.navigate('EditUser', { user: item })}>
-                    <Text style={styles.buttonText}>Sua</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.actionButton, {backgroundColor: COLORS.dangerRed}]} onPress={() => handleDelete(item)}>
-                    <Text style={styles.buttonText}>Xoa</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
+        );
+    };
 
     if (loading) {
         return <ImageBackground source={otherBackground} style={styles.background}><ActivityIndicator size="large" color={COLORS.white} /></ImageBackground>;
@@ -138,6 +165,17 @@ const styles = StyleSheet.create({
         textShadowColor: 'rgba(0,0,0,0.5)',
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 1,
+    },
+    achievementsContainer: {
+        flexDirection: 'row',
+        marginTop: SIZES.base,
+    },
+    achievementIcon: {
+        fontSize: 20,
+        marginRight: SIZES.base,
+        textShadowColor: 'rgba(0,0,0,0.7)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
     },
 });
 

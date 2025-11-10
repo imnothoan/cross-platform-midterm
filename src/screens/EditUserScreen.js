@@ -32,6 +32,7 @@ function EditUserScreen({ route, navigation }) {
         });
     };
 
+    // HÀM UPDATE ĐÃ ĐƯỢC THAY ĐỔI
     const handleUpdate = async () => {
         if (!username) {
             Alert.alert('Loi', 'Ten nhan vat khong duoc de trong.');
@@ -40,13 +41,26 @@ function EditUserScreen({ route, navigation }) {
         setProcessing(true);
         try {
             const dataToUpdate = { username: username };
+            
             if (newImageSelected && imageUri) {
                 const imageBase64 = await RNFS.readFile(imageUri, 'base64');
                 dataToUpdate.image = `data:image/jpeg;base64,${imageBase64}`;
             }
             await firestore().collection('users').doc(user.id).update(dataToUpdate);
             setProcessing(false);
-            Alert.alert('Thanh Cong', 'Cap nhat thong tin thanh cong!', [{ text: 'OK', onPress: () => navigation.goBack() }]);
+
+            // KIỂM TRA VÀ TRAO THÀNH TỰU TẠI ĐÂY
+            if (newImageSelected) {
+                Alert.alert(
+                    "✨ Thanh Tuu Mo Khoa! ✨", 
+                    "Thay Hinh Doi Dang - Ban da tuy bien skin cua minh.",
+                    [{ text: 'Tuyet!', onPress: () => navigation.goBack() }]
+                );
+            } else {
+                // Nếu không thì thông báo bình thường
+                Alert.alert('Thanh Cong', 'Cap nhat thong tin thanh cong!', [{ text: 'OK', onPress: () => navigation.goBack() }]);
+            }
+
         } catch (error) {
             setProcessing(false);
             Alert.alert('Loi Cap Nhat', error.message);
@@ -68,8 +82,7 @@ function EditUserScreen({ route, navigation }) {
                 
                 <TouchableOpacity style={styles.button} onPress={handleUpdate} disabled={processing}>
                     {processing ? <ActivityIndicator color={COLORS.white} /> : <Text style={styles.buttonText}>Luu Thay Doi</Text>}
-                </TouchableOpacity> 
-                {/* DÒNG LỖI ĐÃ ĐƯỢC SỬA Ở TRÊN */}
+                </TouchableOpacity>
                 
             </ScrollView>
         </ImageBackground>
