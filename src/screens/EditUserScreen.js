@@ -82,7 +82,12 @@ function EditUserScreen({ route, navigation }) {
                 
                 <TouchableOpacity style={styles.button} onPress={handleUpdate} disabled={processing}>
                     {processing ? <ActivityIndicator color={COLORS.white} /> : <Text style={styles.buttonText}>Luu Thay Doi</Text>}
+<<<<<<< HEAD
                 </TouchableOpacity>
+=======
+                </TouchableOpacity> 
+               
+>>>>>>> 3704708270e949430b77fecdebc87acc72dae1ad
                 
             </ScrollView>
         </ImageBackground>
